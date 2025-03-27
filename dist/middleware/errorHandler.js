@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const errorHandler = (error, req, res, next) => {
+const errorHandler = (error, req, res) => {
     const statusCode = res.statusCode || 500;
     console.log(error.message);
     res.status(statusCode).json({

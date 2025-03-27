@@ -18,11 +18,11 @@ const storage = multer_1.default.diskStorage({
     },
 });
 const upload = (0, multer_1.default)({ storage });
-router.get("/search", protectRoute_1.default, (0, roleChecker_1.default)(["Seller", "Buyer"]), product_controller_1.searchProducts);
-router.get("/", protectRoute_1.default, (0, roleChecker_1.default)(["Seller", "Buyer"]), product_controller_1.getSingleProduct);
+router.get("/search", product_controller_1.searchProducts);
 router.get("/all", product_controller_1.getAllProducts);
-router.post("/new", protectRoute_1.default, (0, roleChecker_1.default)(["Seller"]), upload.single("productImg"), product_controller_1.addProduct);
-router.put("/update", protectRoute_1.default, (0, roleChecker_1.default)(["Seller"]), upload.single("productImg"), product_controller_1.updateProduct);
+router.get("/:productId", product_controller_1.getSingleProduct);
+router.post("/new", protectRoute_1.default, (0, roleChecker_1.default)(["Seller"]), upload.array("productImg", 5), product_controller_1.addProduct);
+router.put("/update", protectRoute_1.default, (0, roleChecker_1.default)(["Seller"]), upload.array("productImg", 5), product_controller_1.updateProduct);
 router.delete("/remove", protectRoute_1.default, (0, roleChecker_1.default)(["Seller"]), product_controller_1.removeProduct);
 exports.default = router;
 //# sourceMappingURL=product.routes.js.map

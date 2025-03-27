@@ -10,8 +10,10 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const accessToken_1 = require("../utils/accessToken");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 exports.newAccessToken = (0, express_async_handler_1.default)(async (req, res) => {
+    console.log("refreshToDDDDDDDDDDDDDDDDDDDDĐ");
     if (req.cookies?.jwt) {
         const refreshToken = req.cookies.jwt;
+        console.log("refreshToken", refreshToken);
         jsonwebtoken_1.default.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
             if (err) {
                 res.status(403).clearCookie("jwt", {
@@ -33,15 +35,17 @@ exports.newAccessToken = (0, express_async_handler_1.default)(async (req, res) =
     }
 });
 exports.loginUser = (0, express_async_handler_1.default)(async (req, res) => {
-    const { username, password } = req.body;
-    const user = await userModel_1.default.findOne({ username });
+    const { email, password } = req.body;
+    const user = await userModel_1.default.findOne({ email });
+    console.log("dd", user);
     if (!user) {
         res.status(404);
-        throw new Error("Username doesn't exists");
+        throw new Error("Người dùng đã tồn tại!");
     }
     if (user && (await bcrypt_1.default.compare(password, user.password))) {
         const _id = user._id.toString();
         const refreshToken = (0, accessToken_1.generateRefreshToken)(_id);
+        console.log(`Đăng nhập thành công: ${email}, UserID: ${_id}`);
         res.cookie("jwt", refreshToken, {
             httpOnly: true,
             sameSite: "none",
@@ -54,29 +58,28 @@ exports.loginUser = (0, express_async_handler_1.default)(async (req, res) => {
         });
     }
     else {
-        res.status(400);
-        throw new Error("Wrong password");
+        res.status(404).json({ message: "Người dùng đã tồn tại!" });
     }
 });
 exports.registerUser = (0, express_async_handler_1.default)(async (req, res) => {
     console.log("firstName");
-    const { firstName, lastName, username, password, location, role } = req.body;
+    const { username, phoneNumber, email, password, location, role } = req.body;
     console.log("firstName");
-    const user = await userModel_1.default.findOne({ username });
+    const user = await userModel_1.default.findOne({ email });
     if (user) {
         res.status(400);
-        throw new Error("Username already exists!");
+        throw new Error("Tên người dùng đã tồn tại!");
     }
     if (password.length < 8) {
         res.status(400);
-        throw new Error("Password must be at least 8 characters");
+        throw new Error("Mật khẩu phải ít nhất 8 ký tự");
     }
     const hashedPassword = await bcrypt_1.default.hash(password, 12);
     const newUser = await userModel_1.default.create({
-        firstName,
-        lastName,
-        password: hashedPassword,
         username,
+        phoneNumber,
+        email,
+        password: hashedPassword,
         location,
         role,
     });

@@ -25,32 +25,28 @@ const upload = multer({ storage });
 
 router.get(
     "/search",
-    protectRoute,
-    roleChecker(["Seller", "Buyer"]),
     searchProducts
 );
 
-router.get(
-    "/",
-    protectRoute,
-    roleChecker(["Seller", "Buyer"]),
-    getSingleProduct
-);
 
 
 router.get("/all", getAllProducts);
+
+
+router.get("/:productId", getSingleProduct);
+
 router.post(
     "/new",
     protectRoute,
     roleChecker(["Seller"]),
-    upload.single("productImg"),
+    upload.array("productImg", 5),  
     addProduct
 );
 router.put(
     "/update",
     protectRoute,
     roleChecker(["Seller"]),
-    upload.single("productImg"),
+    upload.array("productImg", 5),  
     updateProduct
 );
 router.delete("/remove", protectRoute, roleChecker(["Seller"]), removeProduct);

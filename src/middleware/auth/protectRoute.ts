@@ -6,6 +6,7 @@ import User from "../../models/userModel";
 import mongoose from 'mongoose';
 const protectRoute = asyncHandler(
     async (req: Request, res: Response, next: NextFunction) => {
+        
         // Lấy token từ header authorization
         const token = req.headers["authorization"]?.split(" ")[1];
         console.log("token",token);
@@ -16,7 +17,7 @@ const protectRoute = asyncHandler(
                 const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as {
                     userId: string;
                 };
-console.log("decoded",decoded);
+console.log("decoded",decoded); 
            
                 console.log("userId",decoded.userId);
                 const user = await User.findById(decoded.userId).select("-password");

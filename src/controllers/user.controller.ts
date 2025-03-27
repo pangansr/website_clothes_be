@@ -7,9 +7,8 @@ import mongoose from "mongoose";
 // Details of the account logged in
 export const getAccountDetails = asyncHandler(
     async (req: Request, res: Response) => {
-        console.log("hhhhhhhhhhhhhhh");
         const user = await User.findById(req.user._id).select("-password");
-        console.log("mmmmmmmmmmmmmmmm"+ user);
+
         res.status(200).json(user);
     }
 );
@@ -17,28 +16,29 @@ export const getAccountDetails = asyncHandler(
 export const updateAccountDetails = asyncHandler(
     async (req: Request, res: Response) => {
         const user = await User.findById(req.user._id).select("-password");
-        const { firstName, lastName, username } = req.body as {
-            firstName: string;
-            lastName: string;
+        const {username , phoneNumber, email } = req.body as {
             username: string;
+            phoneNumber: string;
+            email: string;
+        
         };
 
         if (user) {
-            if (firstName) user.firstName = firstName;
-            if (lastName) user.lastName = lastName;
-            if (username) {
-                const isUsernameExist = await User.findOne({ username });
+            if (username) user.username = username;
+            if (phoneNumber) user.phoneNumber = phoneNumber;
+            if (email) {
+                const isUsernameExist = await User.findOne({ email });
                 if (isUsernameExist) {
                     res.status(400);
-                    throw new Error("Username already exist");
+                    throw new Error("Người dùng đã tồn tại");
                 }
-                user.username = username;
+                user.email = email;
             }
             await user.save();
-            res.status(200).json("Account Details updated successfully");
+            res.status(200).json("Cập nhật thành công");
         } else {
             res.status(404);
-            throw new Error("User not found");
+            throw new Error("Không tìm thấy người dùng");
         }
     }
 );
@@ -54,12 +54,12 @@ export const changeAccountPassword = asyncHandler(
         if (user) {
             if (!(await bcrypt.compare(oldPassword, user?.password))) {
                 res.status(400);
-                throw new Error("Password don't match");
+                throw new Error("Mật khẩu không chính xác");
             } else {
                 if (newPassword.length < 8) {
                     res.status(400);
                     throw new Error(
-                        "Password must be greater than 8 characters"
+                        "Mật khẩu phải chứa ít nhất 8 ký tự"
                     );
                 }
 
@@ -71,7 +71,7 @@ export const changeAccountPassword = asyncHandler(
             }
         } else {
             res.status(404);
-            throw new Error("User not found");
+            throw new Error("Người dùng không tồn tại");
         }
     }
 );
@@ -87,7 +87,7 @@ export const getUserDetails = asyncHandler(
             res.status(200).json(user);
         } else {
             res.status(404);
-            throw new Error("User not found");
+            throw new Error("Người dùng không tồn tại");
         }
     }
 );
@@ -97,14 +97,14 @@ export const getFollowers = asyncHandler(
         const { userId } = req.query;
         const seller = await User.findById(userId).populate({
             path: "followers",
-            select: ["firstName", "lastName"],
+            select: ["username", "phoneNumber"],
         });
 
         if (seller) {
             res.status(200).json(seller.followers);
         } else {
             res.status(404);
-            throw new Error("Seller not found");
+            throw new Error("Người dùng không tồn tại");
         }
     }
 );
@@ -114,14 +114,14 @@ export const getFollowing = asyncHandler(
         const { userId } = req.query;
         const currentUser = await User.findById(userId).populate({
             path: "following",
-            select: ["firstName", "lastName"],
+            select: ["username", "phoneNumber"],
         });
 
         if (currentUser) {
             res.status(200).json(currentUser.following);
         } else {
             res.status(404);
-            throw new Error("User not found");
+            throw new Error("Người dùng không tồn tại");
         }
     }
 );
@@ -139,13 +139,13 @@ export const followUser = asyncHandler(async (req: Request, res: Response) => {
 
     if (seller.followers.find((id) => id.toString() == req.user._id)) {
         res.status(400);
-        throw new Error("You already followed this seller");
+        throw new Error("Bạn đã theo dõi người bán này");
     } else {
         seller.followers.push(new mongoose.Types.ObjectId(req.user._id));
         currentUser?.following.push(seller._id);
         await seller.save();
         await currentUser?.save();
-        res.status(200).json({ message: "You follow this Seller" });
+        res.status(200).json({ message: "Theo dõi người bán thành công" });
     }
 });
 
@@ -158,7 +158,7 @@ export const unfollowUser = asyncHandler(
 
         if (!seller || !currentUser) {
             res.status(404);
-            throw new Error("User not found");
+            throw new Error("Không tìm thấy người dùng");
         }
 
         if (seller.followers.find((id) => id.toString() == req.user._id)) {
@@ -170,10 +170,10 @@ export const unfollowUser = asyncHandler(
             );
             await currentUser?.save();
             await seller.save();
-            res.status(200).json({ message: "You unfollowed this seller" });
+            res.status(200).json({ message: "Bạn đã người theo dõi người bán này" });
         } else {
             res.status(400);
-            throw new Error("You didn't follow this seller yet");
+            throw new Error("Bạn vẫn chưa theo dõi người bán này");
         }
     }
 );

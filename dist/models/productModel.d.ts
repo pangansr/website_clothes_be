@@ -10,12 +10,18 @@ declare const productSchema: mongoose.Schema<any, mongoose.Model<any, any, any, 
     category: string;
     price: number;
     stocks: number;
-    sold: number;
-    seller: mongoose.Types.ObjectId;
-    productImg?: {
+    productImg: mongoose.Types.DocumentArray<{
         id: string;
         url: string;
-    } | null | undefined;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        id: string;
+        url: string;
+    }> & {
+        id: string;
+        url: string;
+    }>;
+    sold: number;
+    seller?: mongoose.Types.ObjectId | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -25,12 +31,18 @@ declare const productSchema: mongoose.Schema<any, mongoose.Model<any, any, any, 
     category: string;
     price: number;
     stocks: number;
-    sold: number;
-    seller: mongoose.Types.ObjectId;
-    productImg?: {
+    productImg: mongoose.Types.DocumentArray<{
         id: string;
         url: string;
-    } | null | undefined;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        id: string;
+        url: string;
+    }> & {
+        id: string;
+        url: string;
+    }>;
+    sold: number;
+    seller?: mongoose.Types.ObjectId | null | undefined;
 }>> & mongoose.FlatRecord<{
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -40,12 +52,18 @@ declare const productSchema: mongoose.Schema<any, mongoose.Model<any, any, any, 
     category: string;
     price: number;
     stocks: number;
-    sold: number;
-    seller: mongoose.Types.ObjectId;
-    productImg?: {
+    productImg: mongoose.Types.DocumentArray<{
         id: string;
         url: string;
-    } | null | undefined;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        id: string;
+        url: string;
+    }> & {
+        id: string;
+        url: string;
+    }>;
+    sold: number;
+    seller?: mongoose.Types.ObjectId | null | undefined;
 }> & {
     _id: mongoose.Types.ObjectId;
 } & {
@@ -61,12 +79,18 @@ declare const _default: mongoose.Model<{
     category: string;
     price: number;
     stocks: number;
-    sold: number;
-    seller: mongoose.Types.ObjectId;
-    productImg?: {
+    productImg: mongoose.Types.DocumentArray<{
         id: string;
         url: string;
-    } | null | undefined;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        id: string;
+        url: string;
+    }> & {
+        id: string;
+        url: string;
+    }>;
+    sold: number;
+    seller?: mongoose.Types.ObjectId | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -76,12 +100,18 @@ declare const _default: mongoose.Model<{
     category: string;
     price: number;
     stocks: number;
-    sold: number;
-    seller: mongoose.Types.ObjectId;
-    productImg?: {
+    productImg: mongoose.Types.DocumentArray<{
         id: string;
         url: string;
-    } | null | undefined;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        id: string;
+        url: string;
+    }> & {
+        id: string;
+        url: string;
+    }>;
+    sold: number;
+    seller?: mongoose.Types.ObjectId | null | undefined;
 }> & {
     createdAt: NativeDate;
     updatedAt: NativeDate;
@@ -91,12 +121,18 @@ declare const _default: mongoose.Model<{
     category: string;
     price: number;
     stocks: number;
-    sold: number;
-    seller: mongoose.Types.ObjectId;
-    productImg?: {
+    productImg: mongoose.Types.DocumentArray<{
         id: string;
         url: string;
-    } | null | undefined;
+    }, mongoose.Types.Subdocument<mongoose.Types.ObjectId, any, {
+        id: string;
+        url: string;
+    }> & {
+        id: string;
+        url: string;
+    }>;
+    sold: number;
+    seller?: mongoose.Types.ObjectId | null | undefined;
 } & {
     _id: mongoose.Types.ObjectId;
 } & {

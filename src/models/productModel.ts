@@ -10,6 +10,10 @@ const productSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        // category: {
+        //     type: String,
+        //     required: true,
+        // },
         category: {
             type: String,
             required: true,
@@ -24,25 +28,35 @@ const productSchema = new mongoose.Schema(
             required: true,
             min: 0,
         },
-        productImg: {
-            url: {
-                type: String,
-                required: true,
+        // productImg: {
+        //     url: {
+        //         type: String,
+        //         required: true,
+        //     },
+        //     id: {
+        //         type: String,
+        //         required: true,
+        //     },
+        // },
+        productImg: [
+            {
+                url: {
+                    type: String,
+                    required: true,
+                },
+                id: {
+                    type: String,
+                    required: true,
+                },
             },
-            id: {
-                type: String,
-                required: true,
-            },
-        },
+        ],
+
+
         sold: {
             type: Number,
             default: 0,
         },
-        seller: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "users",
-            required: true,
-        },
+          seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     },
     {
         timestamps: true,

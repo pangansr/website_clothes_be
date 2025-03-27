@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 declare const userSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any, any, any>, {}, {}, {}, {}, mongoose.DefaultSchemaOptions, {
-    firstName: string;
-    lastName: string;
     username: string;
+    phoneNumber: string;
+    email: string;
     password: string;
     totalSales: number;
     role: string;
@@ -10,9 +10,9 @@ declare const userSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any
     following: mongoose.Types.ObjectId[];
     location?: string | null | undefined;
 }, mongoose.Document<unknown, {}, mongoose.FlatRecord<{
-    firstName: string;
-    lastName: string;
     username: string;
+    phoneNumber: string;
+    email: string;
     password: string;
     totalSales: number;
     role: string;
@@ -20,9 +20,9 @@ declare const userSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any
     following: mongoose.Types.ObjectId[];
     location?: string | null | undefined;
 }>> & mongoose.FlatRecord<{
-    firstName: string;
-    lastName: string;
     username: string;
+    phoneNumber: string;
+    email: string;
     password: string;
     totalSales: number;
     role: string;
@@ -36,9 +36,9 @@ declare const userSchema: mongoose.Schema<any, mongoose.Model<any, any, any, any
 }>;
 export type UserType = mongoose.InferSchemaType<typeof userSchema>;
 declare const _default: mongoose.Model<{
-    firstName: string;
-    lastName: string;
     username: string;
+    phoneNumber: string;
+    email: string;
     password: string;
     totalSales: number;
     role: string;
@@ -46,9 +46,9 @@ declare const _default: mongoose.Model<{
     following: mongoose.Types.ObjectId[];
     location?: string | null | undefined;
 }, {}, {}, {}, mongoose.Document<unknown, {}, {
-    firstName: string;
-    lastName: string;
     username: string;
+    phoneNumber: string;
+    email: string;
     password: string;
     totalSales: number;
     role: string;
@@ -56,9 +56,9 @@ declare const _default: mongoose.Model<{
     following: mongoose.Types.ObjectId[];
     location?: string | null | undefined;
 }> & {
-    firstName: string;
-    lastName: string;
     username: string;
+    phoneNumber: string;
+    email: string;
     password: string;
     totalSales: number;
     role: string;

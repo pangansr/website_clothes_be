@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        required: true,
-    },
-    lastName: {
-        type: String,
-        required: true,
-    },
     username: {
+        type: String,
+        required: true,
+    },
+    phoneNumber: {
+        type: String,
+        required: true,
+    },
+    email: {
         type: String,
         required: true,
         unique: true,
@@ -32,16 +32,16 @@ const userSchema = new mongoose.Schema({
     followers: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "users",
+            ref: "User",
         },
     ],
     following: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "users",
+            ref: "User",
         },
     ],
 });
 
 export type UserType = mongoose.InferSchemaType<typeof userSchema>;
-export default mongoose.model<UserType>("users", userSchema);
+export default mongoose.model<UserType>("User", userSchema);

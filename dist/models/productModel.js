@@ -27,25 +27,23 @@ const productSchema = new mongoose_1.default.Schema({
         required: true,
         min: 0,
     },
-    productImg: {
-        url: {
-            type: String,
-            required: true,
+    productImg: [
+        {
+            url: {
+                type: String,
+                required: true,
+            },
+            id: {
+                type: String,
+                required: true,
+            },
         },
-        id: {
-            type: String,
-            required: true,
-        },
-    },
+    ],
     sold: {
         type: Number,
         default: 0,
     },
-    seller: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
+    seller: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "User" },
 }, {
     timestamps: true,
 });

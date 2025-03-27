@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://192.168.1.9:3000", "*"],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
@@ -53,7 +53,13 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-mongoose.connect(process.env.MONGODB_URI!)
+const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
+
+if (!accessTokenSecret || !refreshTokenSecret) {
+    throw new Error("Missing environment variables for JWT tokens.");
+}
+mongoose.connect("mongodb+srv://user:123456aA%40@mydb.npp4k.mongodb.net/test?retryWrites=true&w=majority")
   .then(() => {
     console.log('MongoDB connected');
   })
@@ -65,3 +71,5 @@ mongoose.connect(process.env.MONGODB_URI!)
 app.listen(port, () => {
   console.log(`Server is listening to ${port}`);
 });
+
+

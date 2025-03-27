@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import User from "../models/userModel";
+
 import bcrypt from "bcrypt";
 import {
     generateAccessToken,
@@ -10,9 +11,10 @@ import jwt from "jsonwebtoken";
 
 export const newAccessToken = asyncHandler(
     async (req: Request, res: Response) => {
+        console.log("refreshToDDDDDDDDDDDDDDDDDDDDĐ");
         if (req.cookies?.jwt) {
             const refreshToken = req.cookies.jwt;
-
+            console.log("refreshToken",refreshToken);
             jwt.verify(
                 refreshToken,
                 process.env.REFRESH_TOKEN_SECRET!,
@@ -38,54 +40,56 @@ export const newAccessToken = asyncHandler(
 );
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
+
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    console.log("dd",user);
 
     if (!user) {
         res.status(404);
-        throw new Error("Username doesn't exists");
+        throw new Error("Người dùng đã tồn tại!");
     }
 
     if (user && (await bcrypt.compare(password, user.password))) {
         const _id = user._id.toString();
 
         const refreshToken = generateRefreshToken(_id);
-        console.log(`Đăng nhập thành công: ${username}, UserID: ${_id}`);
+        console.log(`Đăng nhập thành công: ${email}, UserID: ${_id}`);
         res.cookie("jwt", refreshToken, {
             httpOnly: true,
             sameSite: "none",
             secure: true,
             maxAge: 1000 * 60 * 60 * 24,
         });
+
         res.status(200).json({
             userId: _id,
             token: generateAccessToken(user._id.toString()),
         });
     } else {
-        res.status(400);
-        throw new Error("Wrong password");
+         res.status(404).json({ message: "Người dùng đã tồn tại!" });
+
     }
 });
 
 export const registerUser = asyncHandler(
     async (req: Request, res: Response) => {
         console.log("firstName");
-        const { firstName, lastName, username, password, location, role } = req.body;
+        const { username, phoneNumber, email, password, location, role } = req.body;
         console.log("firstName");
      
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ email });
         if (user) {
             res.status(400);
-            throw new Error("Username already exists!");
+            throw new Error("Tên người dùng đã tồn tại!");
         }
       
         // Kiểm tra độ dài mật khẩu
         if (password.length < 8) {
             res.status(400);
-            throw new Error("Password must be at least 8 characters");
+            throw new Error("Mật khẩu phải ít nhất 8 ký tự");
         }
 
-        // Kiểm tra mật khẩu và confirmPassword có trùng khớp không
         // if (password !== confirmPassword) {
         //     res.status(400);
         //     throw new Error("Passwords don't match");
@@ -94,10 +98,10 @@ export const registerUser = asyncHandler(
         // Mã hóa mật khẩu và tạo người dùng mới
         const hashedPassword = await bcrypt.hash(password, 12);
         const newUser = await User.create({
-            firstName,
-            lastName,
-            password: hashedPassword,
             username,
+            phoneNumber,
+            email,
+            password: hashedPassword,
             location,
             role,
         });

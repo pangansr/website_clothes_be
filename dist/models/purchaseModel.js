@@ -16,7 +16,7 @@ const purchaseSchema = new mongoose_1.default.Schema({
     },
     purchaseOwner: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "users",
         required: true,
     },
     totalQuantity: {

@@ -31,7 +31,7 @@ exports.cartSchema = new mongoose_1.default.Schema({
     },
     seller: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "users",
         required: true,
     },
     inCart: {
@@ -40,7 +40,7 @@ exports.cartSchema = new mongoose_1.default.Schema({
     },
     cartOwner: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "users",
         required: true,
     },
 }, {
