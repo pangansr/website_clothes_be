@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["https://clothes-r3l3hz94x-liems-projects-1b3a9117.vercel.app"],
+    origin: ["https://clothes-eosin.vercel.app"],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
