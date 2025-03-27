@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://192.168.1.9:3000", "*"],
+    origin: ["*"],
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
